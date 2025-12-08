@@ -1,6 +1,6 @@
 // @ts-check
 // Using @ecom-co/eslint library for clean and maintainable configuration
-import { createNestJSConfig } from 'nestjs-eslint';
+import { createNestJSConfig } from '@nam088/nestjs-eslint';
 
 export default createNestJSConfig({
   tsconfigRootDir: import.meta.dirname,
