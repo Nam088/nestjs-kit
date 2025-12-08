@@ -4,7 +4,8 @@ import { createNestJSConfig } from 'nestjs-eslint';
 
 export default createNestJSConfig({
   tsconfigRootDir: import.meta.dirname,
-  project: ['./tsconfig.json', './tsconfig.spec.json'],
+  project: ['./tsconfig.eslint.json'],
+  allowDefaultProject: ['*.spec.ts', '*.test.ts'],
 
   // Custom perfectionist configuration
   perfectionist: {
