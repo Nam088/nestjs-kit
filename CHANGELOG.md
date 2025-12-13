@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/Nam088/nestjs-kit/compare/v2.1.1...v2.2.0) (2025-12-13)
+
+
+### Features
+
+* enhance ZodValidationPipe to provide customizable and user-friendly error messages with field formatting options. ([6b84b82](https://github.com/Nam088/nestjs-kit/commit/6b84b8286089e36c1675cf6362d173ec99ddb731))
+
 ## [2.0.2](https://github.com/Nam088/nestjs-kit/compare/v2.0.1...v2.0.2) (2025-12-08)
 
 
