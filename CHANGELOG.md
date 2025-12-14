@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/Nam088/nestjs-kit/compare/v2.2.0...v2.3.0) (2025-12-14)
+
+
+### Features
+
+* Add class-transformer decorators to DTO properties for explicit serialization. ([10f11a8](https://github.com/Nam088/nestjs-kit/commit/10f11a84b137389ccd8cf80c930c0072e2f3f2dc))
+
 # [2.2.0](https://github.com/Nam088/nestjs-kit/compare/v2.1.1...v2.2.0) (2025-12-13)
 
 
