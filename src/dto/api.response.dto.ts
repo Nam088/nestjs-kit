@@ -2,6 +2,8 @@ import { Type } from '@nestjs/common';
 
 import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
 
+import { Expose } from 'class-transformer';
+
 /**
  * Interface for the standardized API response structure.
  * @template T The type of the data payload.
@@ -47,12 +49,15 @@ export const ApiResponseDto = <T>(dataType: null | Type<T>): Type<IApiResponse<T
      */
     class ApiResponse implements IApiResponse<T> {
         @ApiProperty(getApiPropertyOptions())
+        @Expose()
         data!: null | T;
 
         @ApiProperty({ description: 'A descriptive message for the result.', example: 'Success' })
+        @Expose()
         message!: string;
 
         @ApiProperty({ description: 'HTTP Status Code', example: 200 })
+        @Expose()
         statusCode!: number;
     }
 
@@ -80,10 +85,15 @@ export interface ApiResponseDataOptions<T> {
  */
 export class ApiResponseData<T> implements IApiResponse<T> {
     /** The response data payload */
+    @Expose()
     data: T;
+
     /** Descriptive message for the response */
+    @Expose()
     message: string;
+
     /** HTTP status code */
+    @Expose()
     statusCode: number;
 
     /**

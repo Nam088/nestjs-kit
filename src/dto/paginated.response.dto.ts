@@ -2,7 +2,7 @@ import { Type } from '@nestjs/common';
 
 import { ApiProperty } from '@nestjs/swagger';
 
-import { Exclude, Expose } from 'class-transformer';
+import { Type as ClassType, Exclude, Expose } from 'class-transformer';
 
 /**
  * Interface for ApiPaginatedResponseData auto paging options
@@ -212,12 +212,25 @@ export interface PagingOptions {
  */
 export class ApiPaginatedResponseData<T> implements IApiPaginatedResponse<T> {
     /** Array of data items */
+    /** Array of data items */
+    @ApiProperty({ type: [Object] }) // Note: Using [Object] or explicit type if possible, but keep existing ApiProperty
+    @Expose()
     data: T[];
+
     /** Response message */
+    @ApiProperty()
+    @Expose()
     message: string;
+
     /** Pagination information */
+    @ApiProperty({ type: () => Paging })
+    @ClassType(() => Paging)
+    @Expose()
     paging: Paging;
+
     /** HTTP status code */
+    @ApiProperty()
+    @Expose()
     statusCode: number;
 
     /**
@@ -288,15 +301,20 @@ export class ApiPaginatedResponseData<T> implements IApiPaginatedResponse<T> {
 export const ApiPaginatedResponseDto = <T>(itemType: Type<T>) => {
     class PaginatedResponse implements IApiPaginatedResponse<T> {
         @ApiProperty({ type: [itemType] })
+        @Expose()
         data!: T[];
 
         @ApiProperty({ description: 'A descriptive message for the result.', example: 'Success' })
+        @Expose()
         message!: string;
 
         @ApiProperty({ type: () => Paging })
+        @ClassType(() => Paging)
+        @Expose()
         paging!: Paging;
 
         @ApiProperty({ description: 'HTTP Status Code', example: 200 })
+        @Expose()
         statusCode!: number;
     }
 
@@ -533,12 +551,24 @@ export interface IApiCursorPaginatedResponse<T> {
  */
 export class ApiCursorPaginatedResponseData<T> implements IApiCursorPaginatedResponse<T> {
     /** Cursor pagination information */
+    @ApiProperty({ type: () => CursorPaging })
+    @ClassType(() => CursorPaging)
+    @Expose()
     cursorPaging: CursorPaging;
+
     /** Array of data items */
+    @ApiProperty({ type: [Object] })
+    @Expose()
     data: T[];
+
     /** Response message */
+    @ApiProperty()
+    @Expose()
     message: string;
+
     /** HTTP status code */
+    @ApiProperty()
+    @Expose()
     statusCode: number;
 
     /**
@@ -647,15 +677,20 @@ export const ApiCursorPaginatedResponseDto = <T>(itemType: Type<T>) => {
      */
     class CursorPaginatedResponse implements IApiCursorPaginatedResponse<T> {
         @ApiProperty({ type: () => CursorPaging })
+        @ClassType(() => CursorPaging)
+        @Expose()
         cursorPaging!: CursorPaging;
 
         @ApiProperty({ type: [itemType] })
+        @Expose()
         data!: T[];
 
         @ApiProperty({ example: 'Success' })
+        @Expose()
         message!: string;
 
         @ApiProperty({ example: 200 })
+        @Expose()
         statusCode!: number;
     }
 

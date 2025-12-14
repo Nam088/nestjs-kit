@@ -1,5 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
+import { Expose, Type } from 'class-transformer';
+
 import { OrderDto } from './order.dto';
 
 /**
@@ -15,6 +17,8 @@ class BaseQueryDto {
         type: [OrderDto],
         description: 'Array of fields to sort by.',
     })
+    @Expose()
+    @Type(() => OrderDto)
     order?: OrderDto[];
 
     /**
@@ -25,6 +29,7 @@ class BaseQueryDto {
         description: 'Array of field names to include in the response.',
         example: ['id', 'email', 'firstName', 'lastName'],
     })
+    @Expose()
     select?: string[];
 }
 
@@ -52,6 +57,7 @@ export const createCustomQueryDto = (filterExample: Record<string, unknown>) => 
             description: 'JsonLogic rule for filtering records.',
             example: filterExample,
         })
+        @Expose()
         filter?: Record<string, unknown>;
     }
 

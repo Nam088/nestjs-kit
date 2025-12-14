@@ -1,5 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
+import { Expose } from 'class-transformer';
+
 /** Minimum allowed limit value */
 const MIN_LIMIT = 1;
 /** Maximum allowed limit value */
@@ -22,6 +24,7 @@ export class PaginationDto {
         maximum: MAX_LIMIT,
         minimum: MIN_LIMIT,
     })
+    @Expose()
     limit? = 10;
 
     /**
@@ -34,11 +37,13 @@ export class PaginationDto {
         description: 'Page number',
         minimum: 1,
     })
+    @Expose()
     page? = 1;
 
     /**
      * Search query string for filtering results.
      */
     @ApiPropertyOptional({ description: 'Search query string', example: 'Myriad Pro' })
+    @Expose()
     q?: string;
 }

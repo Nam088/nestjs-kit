@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+import { Expose } from 'class-transformer';
+
 /**
  * Data Transfer Object for ordering/sorting configuration.
  * Defines how results should be sorted by field and direction.
@@ -14,11 +16,13 @@ export class OrderDto {
         enum: [1, -1],
         example: -1,
     })
+    @Expose()
     direction!: -1 | 1;
 
     /**
      * Field name to sort by.
      */
     @ApiProperty({ description: 'Field to sort by', example: 'createdAt' })
+    @Expose()
     field!: string;
 }
