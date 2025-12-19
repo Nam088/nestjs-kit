@@ -7,12 +7,12 @@ import type {
     NestInterceptor,
     PlainLiteralObject,
 } from '@nestjs/common';
-import { ClassSerializerInterceptor, Injectable } from '@nestjs/common';
+import { ClassSerializerInterceptor, Injectable, StreamableFile } from '@nestjs/common';
 
 import type { ClassTransformOptions } from 'class-transformer';
 import { instanceToPlain } from 'class-transformer';
 
-import { cloneDeep, get, has, set } from 'lodash';
+import { cloneDeep, get, has, isObject, set } from 'lodash';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -35,6 +35,8 @@ export interface ApiResponseSerializerOptions extends ClassSerializerInterceptor
  * Custom serializer interceptor that properly handles nested plain objects like metadata.
  * This interceptor extends ClassSerializerInterceptor but preserves fields marked with
  * @PreserveValue() decorator from being recursively transformed with excludeExtraneousValues.
+ *
+ * Based on NestJS ClassSerializerInterceptor implementation.
  *
  * @example
  * // In main.ts
@@ -80,48 +82,53 @@ export class ApiResponseSerializerInterceptor extends ClassSerializerInterceptor
     }
 
     /**
-     * Serializes data while preserving fields marked with @PreserveValue() decorator.
-     * @param {PlainLiteralObject | PlainLiteralObject[]} data - Data to serialize
+     * Serializes responses that are non-null objects nor streamable files.
+     * Based on NestJS ClassSerializerInterceptor.serialize()
+     * @param {PlainLiteralObject | PlainLiteralObject[]} response - Response data
      * @param {ClassTransformOptions} options - Transform options
-     * @returns {PlainLiteralObject | PlainLiteralObject[]} Serialized data
-     * @example
-     * const result = this.serializeWithPreservation(responseData, transformOptions);
+     * @returns {PlainLiteralObject | PlainLiteralObject[]} Serialized response
      */
-    private serializeWithPreservation(
-        data: PlainLiteralObject | PlainLiteralObject[],
+    serialize(
+        response: PlainLiteralObject | PlainLiteralObject[],
         options: ClassTransformOptions,
     ): PlainLiteralObject | PlainLiteralObject[] {
-        if (Array.isArray(data)) {
-            return data.map((item: PlainLiteralObject) =>
-                this.serializeWithPreservation(item, options),
-            ) as PlainLiteralObject[];
+        if (!isObject(response) || response instanceof StreamableFile) {
+            return response;
         }
 
-        if (data === null || data === undefined) {
-            return data;
-        }
+        return Array.isArray(response)
+            ? response.map((item) => this.transformToPlain(item, options))
+            : this.transformToPlain(response, options);
+    }
 
-        if (typeof data !== 'object') {
-            return data;
+    /**
+     * Transforms a class instance to plain object with field preservation.
+     * Based on NestJS ClassSerializerInterceptor.transformToPlain()
+     * @param {PlainLiteralObject} plainOrClass - Object to transform
+     * @param {ClassTransformOptions} options - Transform options
+     * @returns {PlainLiteralObject} Transformed plain object
+     */
+    transformToPlain(plainOrClass: PlainLiteralObject, options: ClassTransformOptions): PlainLiteralObject {
+        if (!plainOrClass) {
+            return plainOrClass;
         }
 
         // Get fields to preserve from decorator and options
-        const fieldsToPreserve = this.getFieldsToPreserve(data);
+        const fieldsToPreserve = this.getFieldsToPreserve(plainOrClass);
 
         // Extract fields to preserve before transformation
         const preservedValues: Record<string, unknown> = {};
 
         for (const field of fieldsToPreserve) {
-            if (has(data, field)) {
-                // Deep clone to avoid mutation
-                const value = get(data, field) as unknown;
+            if (has(plainOrClass, field)) {
+                const value = get(plainOrClass, field) as unknown;
 
                 set(preservedValues, field, value !== undefined && value !== null ? cloneDeep(value) : value);
             }
         }
 
         // Apply standard class-transformer serialization
-        const serialized = instanceToPlain(data, options) as PlainLiteralObject;
+        const serialized = instanceToPlain(plainOrClass, options) as PlainLiteralObject;
 
         // Restore preserved fields
         for (const field of fieldsToPreserve) {
@@ -135,11 +142,10 @@ export class ApiResponseSerializerInterceptor extends ClassSerializerInterceptor
 
     /**
      * Intercepts the response and applies serialization with field preservation.
+     * Based on NestJS ClassSerializerInterceptor.intercept()
      * @param {ExecutionContext} context - Execution context
      * @param {CallHandler} next - Next handler in the chain
      * @returns {Observable<unknown>} Observable with serialized response
-     * @example
-     * // Automatically called by NestJS when used as global interceptor
      */
     intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
         const contextOptions = this.getContextOptions(context);
@@ -148,10 +154,6 @@ export class ApiResponseSerializerInterceptor extends ClassSerializerInterceptor
             ...contextOptions,
         };
 
-        return next
-            .handle()
-            .pipe(
-                map((data: PlainLiteralObject | PlainLiteralObject[]) => this.serializeWithPreservation(data, options)),
-            );
+        return next.handle().pipe(map((res: PlainLiteralObject) => this.serialize(res, options)));
     }
 }
