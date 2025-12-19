@@ -4,6 +4,8 @@ import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
 
 import { Expose } from 'class-transformer';
 
+import { PreserveValue } from '../decorators/preserve-value.decorator';
+
 /**
  * Interface for the standardized API response structure.
  * @template T The type of the data payload.
@@ -63,6 +65,7 @@ export const ApiResponseDto = <T>(dataType: null | Type<T>): Type<IApiResponse<T
             required: false,
         })
         @Expose()
+        @PreserveValue()
         metadata?: Record<string, unknown>;
 
         @ApiProperty({ description: 'HTTP Status Code', example: 200 })
@@ -104,6 +107,7 @@ export class ApiResponseData<T> implements IApiResponse<T> {
 
     /** Additional contextual information */
     @Expose()
+    @PreserveValue()
     metadata?: Record<string, unknown>;
 
     /** HTTP status code */
