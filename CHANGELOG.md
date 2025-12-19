@@ -1,3 +1,19 @@
+# [2.7.0-dev.1](https://github.com/Nam088/nestjs-kit/compare/v2.6.0...v2.7.0-dev.1) (2025-12-19)
+
+
+### Bug Fixes
+
+* Add class-transformer Type decorator to metadata fields in API and paginated response DTOs. ([6c718b0](https://github.com/Nam088/nestjs-kit/commit/6c718b0672d9e4a4611ccd9e357a13591258e608))
+* Ensure metadata objects are deeply copied during DTO transformation and remove unnecessary eslint suppressions in zod validation pipe tests. ([b1cff10](https://github.com/Nam088/nestjs-kit/commit/b1cff105869d55403ea72f1f6ae4275557352e22))
+* replace `ClassTransformerType` with `Transform` and `Type` decorators for improved class-transformer usage. ([2b90cb9](https://github.com/Nam088/nestjs-kit/commit/2b90cb923da1dbec2ba4b4a300870262abdbe9e0))
+* use getter for metadata to bypass class-transformer serialization ([89dd45e](https://github.com/Nam088/nestjs-kit/commit/89dd45e78e3a9b2c108122e2eccefdb784632e10))
+
+
+### Features
+
+* add optional metadata field to API and paginated response DTOs and refactor eslint dependency to devDependencies. ([574f70c](https://github.com/Nam088/nestjs-kit/commit/574f70c907b1cf10b015761e1212beeaabeeb367))
+* add PreserveValue decorator and ApiResponseSerializerInterceptor ([4976eaf](https://github.com/Nam088/nestjs-kit/commit/4976eaf3b80190030c2529c56253418a28f2e574))
+
 # [2.6.0](https://github.com/Nam088/nestjs-kit/compare/v2.5.0...v2.6.0) (2025-12-19)
 
 
