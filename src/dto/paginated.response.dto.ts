@@ -1,8 +1,8 @@
-import { Type } from '@nestjs/common';
+import { Type as Constructor } from '@nestjs/common';
 
 import { ApiProperty } from '@nestjs/swagger';
 
-import { Type as ClassType, Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Transform, Type } from 'class-transformer';
 
 /**
  * Interface for ApiPaginatedResponseData auto paging options
@@ -231,14 +231,14 @@ export class ApiPaginatedResponseData<T> implements IApiPaginatedResponse<T> {
         example: { timestamp: '2024-01-01T00:00:00Z' },
         required: false,
     })
-    @ClassType(() => Object)
     @Expose()
+    @Transform(({ value }): Record<string, unknown> | undefined => value as Record<string, unknown> | undefined)
     metadata?: Record<string, unknown>;
 
     /** Pagination information */
     @ApiProperty({ type: () => Paging })
-    @ClassType(() => Paging)
     @Expose()
+    @Type(() => Paging)
     paging: Paging;
 
     /** HTTP status code */
@@ -318,7 +318,7 @@ export class ApiPaginatedResponseData<T> implements IApiPaginatedResponse<T> {
  * @example
  * const UsersPaginatedResponseDto = ApiPaginatedResponseDto(UserDto);
  */
-export const ApiPaginatedResponseDto = <T>(itemType: Type<T>) => {
+export const ApiPaginatedResponseDto = <T>(itemType: Constructor<T>) => {
     class PaginatedResponse implements IApiPaginatedResponse<T> {
         @ApiProperty({ type: [itemType] })
         @Expose()
@@ -333,13 +333,13 @@ export const ApiPaginatedResponseDto = <T>(itemType: Type<T>) => {
             example: { timestamp: '2024-01-01T00:00:00Z' },
             required: false,
         })
-        @ClassType(() => Object)
         @Expose()
+        @Transform(({ value }): Record<string, unknown> | undefined => value as Record<string, unknown> | undefined)
         metadata?: Record<string, unknown>;
 
         @ApiProperty({ type: () => Paging })
-        @ClassType(() => Paging)
         @Expose()
+        @Type(() => Paging)
         paging!: Paging;
 
         @ApiProperty({ description: 'HTTP Status Code', example: 200 })
@@ -584,8 +584,8 @@ export interface IApiCursorPaginatedResponse<T> {
 export class ApiCursorPaginatedResponseData<T> implements IApiCursorPaginatedResponse<T> {
     /** Cursor pagination information */
     @ApiProperty({ type: () => CursorPaging })
-    @ClassType(() => CursorPaging)
     @Expose()
+    @Type(() => CursorPaging)
     cursorPaging: CursorPaging;
 
     /** Array of data items */
@@ -604,8 +604,8 @@ export class ApiCursorPaginatedResponseData<T> implements IApiCursorPaginatedRes
         example: { timestamp: '2024-01-01T00:00:00Z' },
         required: false,
     })
-    @ClassType(() => Object)
     @Expose()
+    @Transform(({ value }): Record<string, unknown> | undefined => value as Record<string, unknown> | undefined)
     metadata?: Record<string, unknown>;
 
     /** HTTP status code */
@@ -716,15 +716,15 @@ export class ApiCursorPaginatedResponseData<T> implements IApiCursorPaginatedRes
  * @example
  * const UsersCursorPaginatedResponseDto = ApiCursorPaginatedResponseDto(UserDto);
  */
-export const ApiCursorPaginatedResponseDto = <T>(itemType: Type<T>) => {
+export const ApiCursorPaginatedResponseDto = <T>(itemType: Constructor<T>) => {
     /**
      * Cursor paginated response class for Swagger documentation.
      * @template T - The type of the data items in the array
      */
     class CursorPaginatedResponse implements IApiCursorPaginatedResponse<T> {
         @ApiProperty({ type: () => CursorPaging })
-        @ClassType(() => CursorPaging)
         @Expose()
+        @Type(() => CursorPaging)
         cursorPaging!: CursorPaging;
 
         @ApiProperty({ type: [itemType] })
@@ -740,8 +740,8 @@ export const ApiCursorPaginatedResponseDto = <T>(itemType: Type<T>) => {
             example: { timestamp: '2024-01-01T00:00:00Z' },
             required: false,
         })
-        @ClassType(() => Object)
         @Expose()
+        @Transform(({ value }): Record<string, unknown> | undefined => value as Record<string, unknown> | undefined)
         metadata?: Record<string, unknown>;
 
         @ApiProperty({ example: 200 })

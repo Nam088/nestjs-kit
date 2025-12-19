@@ -1,8 +1,8 @@
-import { Type } from '@nestjs/common';
+import { Type as Constructor } from '@nestjs/common';
 
 import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
 
-import { Type as ClassTransformerType, Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 
 /**
  * Interface for the standardized API response structure.
@@ -28,7 +28,7 @@ export interface IApiResponse<T> {
  * // For responses without data (e.g., delete operations)
  * const DeleteResponseDto = ApiResponseDto(null);
  */
-export const ApiResponseDto = <T>(dataType: null | Type<T>): Type<IApiResponse<T>> => {
+export const ApiResponseDto = <T>(dataType: Constructor<T> | null): Constructor<IApiResponse<T>> => {
     /**
      * This function determines the correct options for the @ApiProperty decorator
      * based on whether a data type is provided.
@@ -62,8 +62,8 @@ export const ApiResponseDto = <T>(dataType: null | Type<T>): Type<IApiResponse<T
             example: { timestamp: '2024-01-01T00:00:00Z' },
             required: false,
         })
-        @ClassTransformerType(() => Object)
         @Expose()
+        @Transform(({ value }): Record<string, unknown> | undefined => value as Record<string, unknown> | undefined)
         metadata?: Record<string, unknown>;
 
         @ApiProperty({ description: 'HTTP Status Code', example: 200 })
@@ -111,8 +111,8 @@ export class ApiResponseData<T> implements IApiResponse<T> {
         example: { timestamp: '2024-01-01T00:00:00Z' },
         required: false,
     })
-    @ClassTransformerType(() => Object)
     @Expose()
+    @Transform(({ value }): Record<string, unknown> | undefined => value as Record<string, unknown> | undefined)
     metadata?: Record<string, unknown>;
 
     /** HTTP status code */
