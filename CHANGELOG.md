@@ -1,3 +1,10 @@
+# [2.6.0-dev.6](https://github.com/Nam088/nestjs-kit/compare/v2.6.0-dev.5...v2.6.0-dev.6) (2025-12-19)
+
+
+### Features
+
+* add PreserveValue decorator and ApiResponseSerializerInterceptor ([4976eaf](https://github.com/Nam088/nestjs-kit/commit/4976eaf3b80190030c2529c56253418a28f2e574))
+
 # [2.6.0-dev.5](https://github.com/Nam088/nestjs-kit/compare/v2.6.0-dev.4...v2.6.0-dev.5) (2025-12-19)
 
 
