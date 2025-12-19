@@ -1,3 +1,10 @@
+# [2.6.0-dev.5](https://github.com/Nam088/nestjs-kit/compare/v2.6.0-dev.4...v2.6.0-dev.5) (2025-12-19)
+
+
+### Bug Fixes
+
+* use getter for metadata to bypass class-transformer serialization ([89dd45e](https://github.com/Nam088/nestjs-kit/commit/89dd45e78e3a9b2c108122e2eccefdb784632e10))
+
 # [2.6.0-dev.4](https://github.com/Nam088/nestjs-kit/compare/v2.6.0-dev.3...v2.6.0-dev.4) (2025-12-19)
 
 
