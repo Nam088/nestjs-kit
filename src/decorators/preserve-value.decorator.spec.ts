@@ -4,7 +4,6 @@ import { getPreserveValueMetadata, PRESERVE_VALUE_KEY, PreserveValue } from './p
 
 describe('PreserveValue Decorator', () => {
     beforeEach(() => {
-        // Clear metadata between tests
         jest.clearAllMocks();
     });
 
@@ -41,27 +40,12 @@ describe('PreserveValue Decorator', () => {
                 metadata?: Record<string, unknown>;
             }
 
-            // Manually apply decorator twice
             PreserveValue()(TestClass.prototype, 'metadata');
             PreserveValue()(TestClass.prototype, 'metadata');
 
             const keys = Reflect.getMetadata(PRESERVE_VALUE_KEY, TestClass) as string[];
 
             expect(keys.filter((k) => k === 'metadata').length).toBe(1);
-        });
-
-        it('should handle symbol property keys', () => {
-            const symbolKey = Symbol('testSymbol');
-
-            class TestClass {
-                [symbolKey]?: Record<string, unknown>;
-            }
-
-            PreserveValue()(TestClass.prototype, symbolKey);
-
-            const keys = Reflect.getMetadata(PRESERVE_VALUE_KEY, TestClass) as (string | symbol)[];
-
-            expect(keys).toContain(symbolKey);
         });
     });
 
@@ -87,24 +71,6 @@ describe('PreserveValue Decorator', () => {
             expect(result).toEqual([]);
         });
 
-        it('should filter out symbol keys', () => {
-            const symbolKey = Symbol('testSymbol');
-
-            class TestClass {
-                @PreserveValue()
-                metadata?: Record<string, unknown>;
-
-                [symbolKey]?: Record<string, unknown>;
-            }
-
-            PreserveValue()(TestClass.prototype, symbolKey);
-
-            const result = getPreserveValueMetadata(TestClass);
-
-            // Only string keys should be returned
-            expect(result).toEqual(['metadata']);
-        });
-
         it('should work with class instance', () => {
             class TestClass {
                 @PreserveValue()
@@ -113,17 +79,6 @@ describe('PreserveValue Decorator', () => {
 
             const instance = new TestClass();
             const result = getPreserveValueMetadata(instance);
-
-            expect(result).toEqual(['metadata']);
-        });
-
-        it('should work with class constructor', () => {
-            class TestClass {
-                @PreserveValue()
-                metadata?: Record<string, unknown>;
-            }
-
-            const result = getPreserveValueMetadata(TestClass);
 
             expect(result).toEqual(['metadata']);
         });

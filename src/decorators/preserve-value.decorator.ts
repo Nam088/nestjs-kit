@@ -15,8 +15,7 @@ export const PRESERVE_VALUE_KEY = 'preserveValue';
  */
 export function getPreserveValueMetadata(target: object): string[] {
     const constructor = typeof target === 'function' ? target : target.constructor;
-    const keys: (string | symbol)[] =
-        (Reflect.getMetadata(PRESERVE_VALUE_KEY, constructor) as (string | symbol)[] | undefined) ?? [];
+    const keys = (Reflect.getMetadata(PRESERVE_VALUE_KEY, constructor) as (string | symbol)[] | undefined) ?? [];
 
     return keys.filter((key): key is string => typeof key === 'string');
 }
