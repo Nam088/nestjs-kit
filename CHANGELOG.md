@@ -1,3 +1,10 @@
+# [2.6.0-dev.4](https://github.com/Nam088/nestjs-kit/compare/v2.6.0-dev.3...v2.6.0-dev.4) (2025-12-19)
+
+
+### Bug Fixes
+
+* Ensure metadata objects are deeply copied during DTO transformation and remove unnecessary eslint suppressions in zod validation pipe tests. ([b1cff10](https://github.com/Nam088/nestjs-kit/commit/b1cff105869d55403ea72f1f6ae4275557352e22))
+
 # [2.6.0-dev.3](https://github.com/Nam088/nestjs-kit/compare/v2.6.0-dev.2...v2.6.0-dev.3) (2025-12-19)
 
 
