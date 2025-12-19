@@ -2,7 +2,9 @@ import { Type as Constructor } from '@nestjs/common';
 
 import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
 
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
+
+import { PreserveValue } from '../decorators/preserve-value.decorator';
 
 /**
  * Interface for the standardized API response structure.
@@ -63,11 +65,7 @@ export const ApiResponseDto = <T>(dataType: Constructor<T> | null): Constructor<
             required: false,
         })
         @Expose()
-        @Transform(
-            ({ value }): Record<string, unknown> | undefined =>
-                value ? (JSON.parse(JSON.stringify(value)) as Record<string, unknown>) : undefined,
-            { toPlainOnly: true },
-        )
+        @PreserveValue()
         metadata?: Record<string, unknown>;
 
         @ApiProperty({ description: 'HTTP Status Code', example: 200 })
@@ -109,28 +107,20 @@ export class ApiResponseData<T> implements IApiResponse<T> {
     @Expose()
     message: string;
 
-    /** HTTP status code */
-    @ApiProperty({ example: 200 })
-    @Expose()
-    statusCode: number;
-
     /** Additional contextual information */
     @ApiProperty({
         description: 'Additional contextual information',
         example: { timestamp: '2024-01-01T00:00:00Z' },
         required: false,
     })
-    @Expose({ name: 'metadata' })
-    get metadata(): Record<string, unknown> | undefined {
-        return this._metadata ? (JSON.parse(JSON.stringify(this._metadata)) as Record<string, unknown>) : undefined;
-    }
+    @Expose()
+    @PreserveValue()
+    metadata?: Record<string, unknown>;
 
-    set metadata(value: Record<string, unknown> | undefined) {
-        this._metadata = value;
-    }
-
-    /** Private storage for metadata */
-    private _metadata?: Record<string, unknown>;
+    /** HTTP status code */
+    @ApiProperty({ example: 200 })
+    @Expose()
+    statusCode: number;
 
     /**
      * Creates a new ApiResponseData instance.
@@ -152,7 +142,7 @@ export class ApiResponseData<T> implements IApiResponse<T> {
         this.statusCode = options.statusCode ?? 200;
         this.message = options.message ?? 'Success';
         this.data = options.data;
-        this._metadata = options.metadata;
+        this.metadata = options.metadata;
     }
 
     /**
