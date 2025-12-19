@@ -1,3 +1,10 @@
+# [2.4.0-dev.1](https://github.com/Nam088/nestjs-kit/compare/v2.3.0...v2.4.0-dev.1) (2025-12-19)
+
+
+### Features
+
+* Enhance Swagger configuration with auto-auth capabilities and additional options ([4dce45a](https://github.com/Nam088/nestjs-kit/commit/4dce45a675dcfb2096be514f80805959ee87c020))
+
 # [2.3.0](https://github.com/Nam088/nestjs-kit/compare/v2.2.0...v2.3.0) (2025-12-14)
 
 
