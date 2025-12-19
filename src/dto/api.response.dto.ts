@@ -9,8 +9,9 @@ import { Expose } from 'class-transformer';
  * @template T The type of the data payload.
  */
 export interface IApiResponse<T> {
-    data: null | T; // Allow null for responses like delete
+    data?: null | T; // Allow null or undefined for responses like delete
     message: string;
+    metadata?: Record<string, unknown>; // Additional contextual information
     statusCode: number;
 }
 
@@ -40,7 +41,7 @@ export const ApiResponseDto = <T>(dataType: null | Type<T>): Type<IApiResponse<T
         }
 
         // If data type is null, we just indicate it can be null and provide an example
-        return { example: null, nullable: true };
+        return { example: null, nullable: true, required: false };
     };
 
     /**
@@ -50,11 +51,19 @@ export const ApiResponseDto = <T>(dataType: null | Type<T>): Type<IApiResponse<T
     class ApiResponse implements IApiResponse<T> {
         @ApiProperty(getApiPropertyOptions())
         @Expose()
-        data!: null | T;
+        data?: null | T;
 
         @ApiProperty({ description: 'A descriptive message for the result.', example: 'Success' })
         @Expose()
         message!: string;
+
+        @ApiProperty({
+            description: 'Additional contextual information',
+            example: { timestamp: '2024-01-01T00:00:00Z' },
+            required: false,
+        })
+        @Expose()
+        metadata?: Record<string, unknown>;
 
         @ApiProperty({ description: 'HTTP Status Code', example: 200 })
         @Expose()
@@ -74,8 +83,9 @@ export const ApiResponseDto = <T>(dataType: null | Type<T>): Type<IApiResponse<T
  * @template T The type of the data payload.
  */
 export interface ApiResponseDataOptions<T> {
-    data: T;
+    data?: T;
     message?: string;
+    metadata?: Record<string, unknown>;
     statusCode?: number;
 }
 
@@ -87,7 +97,7 @@ export class ApiResponseData<T> implements IApiResponse<T> {
     /** The response data payload */
     @ApiProperty({ nullable: true, required: false })
     @Expose()
-    data: T;
+    data?: T;
 
     /** Descriptive message for the response */
     @ApiProperty({ example: 'Success' })
@@ -112,30 +122,43 @@ export class ApiResponseData<T> implements IApiResponse<T> {
      * Creates a new ApiResponseData instance.
      * @param {ApiResponseDataOptions<T>} options - Configuration options for the response
      * @example
+     * // With data and metadata
      * const response = new ApiResponseData({
      *   data: { id: 1, name: 'John' },
      *   message: 'User retrieved successfully',
-     *   statusCode: 200
+     *   metadata: { executionTime: '15ms' }
+     * });
+     *
+     * // Without data
+     * const responseWithoutData = new ApiResponseData({
+     *   message: 'Operation completed successfully'
      * });
      */
     constructor(options: ApiResponseDataOptions<T>) {
         this.statusCode = options.statusCode ?? 200;
         this.message = options.message ?? 'Success';
         this.data = options.data;
+        this.metadata = options.metadata;
     }
 
     /**
      * Static factory method for backward compatibility.
      * @template T - The type of the data payload
-     * @param {T} data - The response data
+     * @param {T} data - The response data (optional)
      * @param {string} message - Success message
      * @param {number} statusCode - HTTP status code
+     * @param {Record<string, unknown>} metadata - Additional information (optional)
      * @returns {ApiResponseData<T>} New ApiResponseData instance
      * @deprecated Use constructor with object parameter instead
      * @example
-     * const response = ApiResponseData.create(userData, 'Success', 200);
+     * const response = ApiResponseData.create(userData, 'Success', 200, { debug: true });
      */
-    static create<T>(data: T, message = 'Success', statusCode = 200): ApiResponseData<T> {
-        return new ApiResponseData({ data, message, statusCode });
+    static create<T>(
+        data?: T,
+        message = 'Success',
+        statusCode = 200,
+        metadata?: Record<string, unknown>,
+    ): ApiResponseData<T> {
+        return new ApiResponseData({ data, message, metadata, statusCode });
     }
 }

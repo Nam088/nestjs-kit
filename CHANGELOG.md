@@ -12,6 +12,20 @@
 
 * Enhance Swagger configuration with auto-auth capabilities and additional options ([4dce45a](https://github.com/Nam088/nestjs-kit/commit/4dce45a675dcfb2096be514f80805959ee87c020))
 
+# [2.5.0](https://github.com/Nam088/nestjs-kit/compare/v2.4.0...v2.5.0) (2025-12-19)
+
+
+### Features
+
+* Update IApiResponse and ApiResponseData to support optional data and metadata fields ([067be27](https://github.com/Nam088/nestjs-kit/commit/067be27508b9a03caf8a25520fcb99468af850fc))
+
+# [2.4.0](https://github.com/Nam088/nestjs-kit/compare/v2.3.0...v2.4.0) (2025-12-19)
+
+
+### Features
+
+* Enhance Swagger configuration with auto-auth capabilities and additional options ([4dce45a](https://github.com/Nam088/nestjs-kit/commit/4dce45a675dcfb2096be514f80805959ee87c020))
+
 # [2.3.0](https://github.com/Nam088/nestjs-kit/compare/v2.2.0...v2.3.0) (2025-12-14)
 
 
