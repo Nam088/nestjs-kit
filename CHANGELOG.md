@@ -1,3 +1,10 @@
+# [2.6.0-dev.2](https://github.com/Nam088/nestjs-kit/compare/v2.6.0-dev.1...v2.6.0-dev.2) (2025-12-19)
+
+
+### Bug Fixes
+
+* Add class-transformer Type decorator to metadata fields in API and paginated response DTOs. ([6c718b0](https://github.com/Nam088/nestjs-kit/commit/6c718b0672d9e4a4611ccd9e357a13591258e608))
+
 # [2.6.0-dev.1](https://github.com/Nam088/nestjs-kit/compare/v2.5.0...v2.6.0-dev.1) (2025-12-19)
 
 
