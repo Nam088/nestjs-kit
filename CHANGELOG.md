@@ -1,3 +1,10 @@
+# [2.4.0-dev.2](https://github.com/Nam088/nestjs-kit/compare/v2.4.0-dev.1...v2.4.0-dev.2) (2025-12-19)
+
+
+### Features
+
+* add optional metadata field to API and paginated response DTOs and refactor eslint dependency to devDependencies. ([574f70c](https://github.com/Nam088/nestjs-kit/commit/574f70c907b1cf10b015761e1212beeaabeeb367))
+
 # [2.4.0-dev.1](https://github.com/Nam088/nestjs-kit/compare/v2.3.0...v2.4.0-dev.1) (2025-12-19)
 
 
