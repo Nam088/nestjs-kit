@@ -70,8 +70,16 @@ export interface OAuth2Provider {
 export interface SwaggerConfigOptions {
     /** API key authentication configuration */
     apiKey?: ApiKeyConfig;
+    /** API pattern to trigger auto-auth (default: '/login') */
+    autoAuthApiPattern?: string;
+    /** JSON key to extract token from response (default: 'accessToken') */
+    autoAuthTokenKey?: string;
+    /** Custom JavaScript string to inject into Swagger UI */
+    customJs?: string;
     /** API description */
     description: string;
+    /** Enable automatic token injection on login */
+    enableAutoAuth?: boolean;
     /** JWT authentication configuration */
     jwt?: JwtConfig;
     /** Node environment */

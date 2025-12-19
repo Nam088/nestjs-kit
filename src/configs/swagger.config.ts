@@ -25,7 +25,19 @@ export type * from './swagger/interfaces';
  * });
  */
 export const setUpSwagger = (app: NestApplication, options: SwaggerConfigOptions) => {
-    const { title, apiKey, description, jwt, nodeEnv, oauth2, version } = options;
+    const {
+        title,
+        apiKey,
+        autoAuthApiPattern = '/login',
+        autoAuthTokenKey = 'accessToken',
+        customJs,
+        description,
+        enableAutoAuth,
+        jwt,
+        nodeEnv,
+        oauth2,
+        version,
+    } = options;
 
     const documentBuilder = new DocumentBuilder()
         .setTitle(title)
@@ -71,10 +83,62 @@ export const setUpSwagger = (app: NestApplication, options: SwaggerConfigOptions
 
     const topbarHtml = getTopbarHtml(title, nodeEnv);
 
+    // Auto-auth script
+    const autoAuthScript = `
+    (function() {
+      var originalFetch = window.fetch;
+      window.fetch = function(input, init) {
+        return originalFetch(input, init).then(function(response) {
+          if (input && input.toString().endsWith('${autoAuthApiPattern}') && response.ok) {
+            response.clone().json().then(function(data) {
+              if (data && data['${autoAuthTokenKey}']) {
+                setTimeout(function() {
+                  if (window.ui && window.ui.authActions) {
+                    var token = data['${autoAuthTokenKey}'];
+                    var authObj = {
+                      bearer: {
+                        name: "bearer",
+                        schema: {
+                          type: "http",
+                          scheme: "bearer",
+                          bearerFormat: "JWT",
+                          description: "JWT access token"
+                        },
+                        value: token
+                      }
+                    };
+                    window.ui.authActions.authorize(authObj);
+                    console.log('Auto-authorized with new token');
+                    
+                    // Optional: Force persist if persistAuthorization is on
+                    try {
+                      localStorage.setItem('authorized', JSON.stringify(authObj));
+                    } catch (e) {}
+                  }
+                }, 100);
+              }
+            }).catch(function() {});
+          }
+          return response;
+        });
+      };
+    })();
+    `;
+
+    let finalCustomJs = getCustomJsStr(topbarHtml);
+
+    if (enableAutoAuth) {
+        finalCustomJs += autoAuthScript;
+    }
+
+    if (customJs) {
+        finalCustomJs += customJs;
+    }
+
     const customOptions: SwaggerCustomOptions = {
         customCss: CUSTOM_CSS,
         customCssUrl: ['https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap'],
-        customJsStr: getCustomJsStr(topbarHtml),
+        customJsStr: finalCustomJs,
         customSiteTitle: `${title} Docs`,
         swaggerOptions: {
             displayRequestDuration: true,
