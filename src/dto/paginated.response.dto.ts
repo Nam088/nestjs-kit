@@ -231,6 +231,7 @@ export class ApiPaginatedResponseData<T> implements IApiPaginatedResponse<T> {
         example: { timestamp: '2024-01-01T00:00:00Z' },
         required: false,
     })
+    @ClassType(() => Object)
     @Expose()
     metadata?: Record<string, unknown>;
 
@@ -332,6 +333,7 @@ export const ApiPaginatedResponseDto = <T>(itemType: Type<T>) => {
             example: { timestamp: '2024-01-01T00:00:00Z' },
             required: false,
         })
+        @ClassType(() => Object)
         @Expose()
         metadata?: Record<string, unknown>;
 
@@ -602,6 +604,7 @@ export class ApiCursorPaginatedResponseData<T> implements IApiCursorPaginatedRes
         example: { timestamp: '2024-01-01T00:00:00Z' },
         required: false,
     })
+    @ClassType(() => Object)
     @Expose()
     metadata?: Record<string, unknown>;
 
@@ -737,6 +740,7 @@ export const ApiCursorPaginatedResponseDto = <T>(itemType: Type<T>) => {
             example: { timestamp: '2024-01-01T00:00:00Z' },
             required: false,
         })
+        @ClassType(() => Object)
         @Expose()
         metadata?: Record<string, unknown>;
 

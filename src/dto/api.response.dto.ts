@@ -2,7 +2,7 @@ import { Type } from '@nestjs/common';
 
 import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
 
-import { Expose } from 'class-transformer';
+import { Type as ClassTransformerType, Expose } from 'class-transformer';
 
 /**
  * Interface for the standardized API response structure.
@@ -62,6 +62,7 @@ export const ApiResponseDto = <T>(dataType: null | Type<T>): Type<IApiResponse<T
             example: { timestamp: '2024-01-01T00:00:00Z' },
             required: false,
         })
+        @ClassTransformerType(() => Object)
         @Expose()
         metadata?: Record<string, unknown>;
 
@@ -110,6 +111,7 @@ export class ApiResponseData<T> implements IApiResponse<T> {
         example: { timestamp: '2024-01-01T00:00:00Z' },
         required: false,
     })
+    @ClassTransformerType(() => Object)
     @Expose()
     metadata?: Record<string, unknown>;
 
