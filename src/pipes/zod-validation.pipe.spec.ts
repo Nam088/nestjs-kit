@@ -831,6 +831,7 @@ describe('ZodValidationPipe', () => {
         it('should handle preprocess transformations', () => {
             const schema = z.preprocess(
                 (val) => {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                     if (typeof val === 'string') return JSON.parse(val);
 
                     return val;
@@ -851,7 +852,6 @@ describe('ZodValidationPipe', () => {
             });
 
             it('should respect Zod Global Error Map if message differs from default pattern', () => {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const customErrorMap = (issue: any, ctx: any) => {
                     if (issue.code === 'invalid_type' && issue.expected === 'string') {
                         return { message: 'Custom Logic: Expected a string!' };
@@ -860,7 +860,6 @@ describe('ZodValidationPipe', () => {
                     return { message: ctx.defaultError };
                 };
 
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 z.setErrorMap(customErrorMap as any);
 
                 const schema = z.string();

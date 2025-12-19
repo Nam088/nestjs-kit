@@ -63,7 +63,9 @@ export const ApiResponseDto = <T>(dataType: Constructor<T> | null): Constructor<
             required: false,
         })
         @Expose()
-        @Transform(({ value }): Record<string, unknown> | undefined => value as Record<string, unknown> | undefined)
+        @Transform(({ value }): Record<string, unknown> | undefined =>
+            value ? (JSON.parse(JSON.stringify(value)) as Record<string, unknown>) : undefined,
+        )
         metadata?: Record<string, unknown>;
 
         @ApiProperty({ description: 'HTTP Status Code', example: 200 })
@@ -112,7 +114,9 @@ export class ApiResponseData<T> implements IApiResponse<T> {
         required: false,
     })
     @Expose()
-    @Transform(({ value }): Record<string, unknown> | undefined => value as Record<string, unknown> | undefined)
+    @Transform(({ value }): Record<string, unknown> | undefined =>
+        value ? (JSON.parse(JSON.stringify(value)) as Record<string, unknown>) : undefined,
+    )
     metadata?: Record<string, unknown>;
 
     /** HTTP status code */

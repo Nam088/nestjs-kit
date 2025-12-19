@@ -232,7 +232,9 @@ export class ApiPaginatedResponseData<T> implements IApiPaginatedResponse<T> {
         required: false,
     })
     @Expose()
-    @Transform(({ value }): Record<string, unknown> | undefined => value as Record<string, unknown> | undefined)
+    @Transform(({ value }): Record<string, unknown> | undefined =>
+        value ? (JSON.parse(JSON.stringify(value)) as Record<string, unknown>) : undefined,
+    )
     metadata?: Record<string, unknown>;
 
     /** Pagination information */
@@ -334,7 +336,9 @@ export const ApiPaginatedResponseDto = <T>(itemType: Constructor<T>) => {
             required: false,
         })
         @Expose()
-        @Transform(({ value }): Record<string, unknown> | undefined => value as Record<string, unknown> | undefined)
+        @Transform(({ value }): Record<string, unknown> | undefined =>
+            value ? (JSON.parse(JSON.stringify(value)) as Record<string, unknown>) : undefined,
+        )
         metadata?: Record<string, unknown>;
 
         @ApiProperty({ type: () => Paging })
@@ -605,7 +609,9 @@ export class ApiCursorPaginatedResponseData<T> implements IApiCursorPaginatedRes
         required: false,
     })
     @Expose()
-    @Transform(({ value }): Record<string, unknown> | undefined => value as Record<string, unknown> | undefined)
+    @Transform(({ value }): Record<string, unknown> | undefined =>
+        value ? (JSON.parse(JSON.stringify(value)) as Record<string, unknown>) : undefined,
+    )
     metadata?: Record<string, unknown>;
 
     /** HTTP status code */
@@ -741,7 +747,9 @@ export const ApiCursorPaginatedResponseDto = <T>(itemType: Constructor<T>) => {
             required: false,
         })
         @Expose()
-        @Transform(({ value }): Record<string, unknown> | undefined => value as Record<string, unknown> | undefined)
+        @Transform(({ value }): Record<string, unknown> | undefined =>
+            value ? (JSON.parse(JSON.stringify(value)) as Record<string, unknown>) : undefined,
+        )
         metadata?: Record<string, unknown>;
 
         @ApiProperty({ example: 200 })
