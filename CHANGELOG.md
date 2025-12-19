@@ -1,3 +1,10 @@
+# [2.6.0-dev.3](https://github.com/Nam088/nestjs-kit/compare/v2.6.0-dev.2...v2.6.0-dev.3) (2025-12-19)
+
+
+### Bug Fixes
+
+* replace `ClassTransformerType` with `Transform` and `Type` decorators for improved class-transformer usage. ([2b90cb9](https://github.com/Nam088/nestjs-kit/commit/2b90cb923da1dbec2ba4b4a300870262abdbe9e0))
+
 # [2.6.0-dev.2](https://github.com/Nam088/nestjs-kit/compare/v2.6.0-dev.1...v2.6.0-dev.2) (2025-12-19)
 
 
