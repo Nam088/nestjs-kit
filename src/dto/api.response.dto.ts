@@ -109,24 +109,28 @@ export class ApiResponseData<T> implements IApiResponse<T> {
     @Expose()
     message: string;
 
+    /** HTTP status code */
+    @ApiProperty({ example: 200 })
+    @Expose()
+    statusCode: number;
+
     /** Additional contextual information */
     @ApiProperty({
         description: 'Additional contextual information',
         example: { timestamp: '2024-01-01T00:00:00Z' },
         required: false,
     })
-    @Expose()
-    @Transform(
-        ({ value }): Record<string, unknown> | undefined =>
-            value ? (JSON.parse(JSON.stringify(value)) as Record<string, unknown>) : undefined,
-        { toPlainOnly: true },
-    )
-    metadata?: Record<string, unknown>;
+    @Expose({ name: 'metadata' })
+    get metadata(): Record<string, unknown> | undefined {
+        return this._metadata ? (JSON.parse(JSON.stringify(this._metadata)) as Record<string, unknown>) : undefined;
+    }
 
-    /** HTTP status code */
-    @ApiProperty({ example: 200 })
-    @Expose()
-    statusCode: number;
+    set metadata(value: Record<string, unknown> | undefined) {
+        this._metadata = value;
+    }
+
+    /** Private storage for metadata */
+    private _metadata?: Record<string, unknown>;
 
     /**
      * Creates a new ApiResponseData instance.
@@ -148,7 +152,7 @@ export class ApiResponseData<T> implements IApiResponse<T> {
         this.statusCode = options.statusCode ?? 200;
         this.message = options.message ?? 'Success';
         this.data = options.data;
-        this.metadata = options.metadata;
+        this._metadata = options.metadata;
     }
 
     /**
