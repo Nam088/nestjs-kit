@@ -85,14 +85,26 @@ export interface ApiResponseDataOptions<T> {
  */
 export class ApiResponseData<T> implements IApiResponse<T> {
     /** The response data payload */
+    @ApiProperty({ nullable: true, required: false })
     @Expose()
     data: T;
 
     /** Descriptive message for the response */
+    @ApiProperty({ example: 'Success' })
     @Expose()
     message: string;
 
+    /** Additional contextual information */
+    @ApiProperty({
+        description: 'Additional contextual information',
+        example: { timestamp: '2024-01-01T00:00:00Z' },
+        required: false,
+    })
+    @Expose()
+    metadata?: Record<string, unknown>;
+
     /** HTTP status code */
+    @ApiProperty({ example: 200 })
     @Expose()
     statusCode: number;
 

@@ -43,13 +43,13 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@nam088/nestjs-eslint": "^2.2.4",
     "class-transformer": "^0.5.1",
     "lodash": "^4.17.21",
     "uuid": "^11.1.0",
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@nam088/nestjs-eslint": "^2.2.4",
     "@nestjs/common": "^11.1.8",
     "@nestjs/core": "^11.1.8",
     "@nestjs/swagger": "^11.2.1",

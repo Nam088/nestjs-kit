@@ -11,6 +11,7 @@ export interface ApiPaginatedResponseDataAutoPagingOptions<T> {
     data: T[];
     limit: number;
     message?: string;
+    metadata?: Record<string, unknown>;
     page: number;
     statusCode?: number;
     total: number;
@@ -23,6 +24,7 @@ export interface ApiPaginatedResponseDataAutoPagingOptions<T> {
 export interface ApiPaginatedResponseDataOptions<T> {
     data: T[];
     message?: string;
+    metadata?: Record<string, unknown>;
     paging: Paging;
     statusCode?: number;
 }
@@ -34,6 +36,7 @@ export interface ApiPaginatedResponseDataOptions<T> {
 export interface IApiPaginatedResponse<T> {
     data: T[];
     message: string;
+    metadata?: Record<string, unknown>;
     paging: Paging;
     statusCode: number;
 }
@@ -222,6 +225,15 @@ export class ApiPaginatedResponseData<T> implements IApiPaginatedResponse<T> {
     @Expose()
     message: string;
 
+    /** Additional contextual information */
+    @ApiProperty({
+        description: 'Additional contextual information',
+        example: { timestamp: '2024-01-01T00:00:00Z' },
+        required: false,
+    })
+    @Expose()
+    metadata?: Record<string, unknown>;
+
     /** Pagination information */
     @ApiProperty({ type: () => Paging })
     @ClassType(() => Paging)
@@ -249,6 +261,7 @@ export class ApiPaginatedResponseData<T> implements IApiPaginatedResponse<T> {
         this.message = options.message ?? 'Success';
         this.data = options.data;
         this.paging = options.paging;
+        this.metadata = options.metadata;
     }
 
     /**
@@ -263,8 +276,14 @@ export class ApiPaginatedResponseData<T> implements IApiPaginatedResponse<T> {
      * @example
      * const response = ApiPaginatedResponseData.create(users, paging, 'Success', 200);
      */
-    static create<T>(data: T[], paging: Paging, message = 'Success', statusCode = 200): ApiPaginatedResponseData<T> {
-        return new ApiPaginatedResponseData({ data, message, paging, statusCode });
+    static create<T>(
+        data: T[],
+        paging: Paging,
+        message = 'Success',
+        statusCode = 200,
+        metadata?: Record<string, unknown>,
+    ): ApiPaginatedResponseData<T> {
+        return new ApiPaginatedResponseData({ data, message, metadata, paging, statusCode });
     }
 
     /**
@@ -282,10 +301,10 @@ export class ApiPaginatedResponseData<T> implements IApiPaginatedResponse<T> {
      * });
      */
     static createWithAutoPaging<T>(options: ApiPaginatedResponseDataAutoPagingOptions<T>): ApiPaginatedResponseData<T> {
-        const { data, limit, message = 'Success', page, statusCode = 200, total } = options;
+        const { data, limit, message = 'Success', metadata, page, statusCode = 200, total } = options;
         const paging = Paging.createWithAutoCalculation({ currentPageSize: data.length, limit, page, total });
 
-        return new ApiPaginatedResponseData({ data, message, paging, statusCode });
+        return new ApiPaginatedResponseData({ data, message, metadata, paging, statusCode });
     }
 }
 
@@ -307,6 +326,14 @@ export const ApiPaginatedResponseDto = <T>(itemType: Type<T>) => {
         @ApiProperty({ description: 'A descriptive message for the result.', example: 'Success' })
         @Expose()
         message!: string;
+
+        @ApiProperty({
+            description: 'Additional contextual information',
+            example: { timestamp: '2024-01-01T00:00:00Z' },
+            required: false,
+        })
+        @Expose()
+        metadata?: Record<string, unknown>;
 
         @ApiProperty({ type: () => Paging })
         @ClassType(() => Paging)
@@ -339,6 +366,7 @@ export interface ApiCursorPaginatedResponseDataAutoCursorsOptions<T> {
     lastCursor?: null | string;
     limit: number;
     message?: string;
+    metadata?: Record<string, unknown>;
     nextCursor?: null | string;
     previousCursor?: null | string;
     statusCode?: number;
@@ -353,6 +381,7 @@ export interface ApiCursorPaginatedResponseDataOptions<T> {
     cursorPaging: CursorPaging;
     data: T[];
     message?: string;
+    metadata?: Record<string, unknown>;
     statusCode?: number;
 }
 
@@ -542,6 +571,7 @@ export interface IApiCursorPaginatedResponse<T> {
     cursorPaging: CursorPaging;
     data: T[];
     message: string;
+    metadata?: Record<string, unknown>;
     statusCode: number;
 }
 
@@ -566,6 +596,15 @@ export class ApiCursorPaginatedResponseData<T> implements IApiCursorPaginatedRes
     @Expose()
     message: string;
 
+    /** Additional contextual information */
+    @ApiProperty({
+        description: 'Additional contextual information',
+        example: { timestamp: '2024-01-01T00:00:00Z' },
+        required: false,
+    })
+    @Expose()
+    metadata?: Record<string, unknown>;
+
     /** HTTP status code */
     @ApiProperty()
     @Expose()
@@ -587,6 +626,7 @@ export class ApiCursorPaginatedResponseData<T> implements IApiCursorPaginatedRes
         this.message = options.message ?? 'Success';
         this.data = options.data;
         this.cursorPaging = options.cursorPaging;
+        this.metadata = options.metadata;
     }
 
     /**
@@ -606,8 +646,9 @@ export class ApiCursorPaginatedResponseData<T> implements IApiCursorPaginatedRes
         cursorPaging: CursorPaging,
         message = 'Success',
         statusCode = 200,
+        metadata?: Record<string, unknown>,
     ): ApiCursorPaginatedResponseData<T> {
-        return new ApiCursorPaginatedResponseData({ cursorPaging, data, message, statusCode });
+        return new ApiCursorPaginatedResponseData({ cursorPaging, data, message, metadata, statusCode });
     }
 
     /**
@@ -634,6 +675,7 @@ export class ApiCursorPaginatedResponseData<T> implements IApiCursorPaginatedRes
             lastCursor,
             limit,
             message = 'Success',
+            metadata,
             nextCursor,
             previousCursor,
             statusCode = 200,
@@ -657,6 +699,7 @@ export class ApiCursorPaginatedResponseData<T> implements IApiCursorPaginatedRes
             cursorPaging,
             data: actualData,
             message,
+            metadata,
             statusCode,
         });
     }
@@ -688,6 +731,14 @@ export const ApiCursorPaginatedResponseDto = <T>(itemType: Type<T>) => {
         @ApiProperty({ example: 'Success' })
         @Expose()
         message!: string;
+
+        @ApiProperty({
+            description: 'Additional contextual information',
+            example: { timestamp: '2024-01-01T00:00:00Z' },
+            required: false,
+        })
+        @Expose()
+        metadata?: Record<string, unknown>;
 
         @ApiProperty({ example: 200 })
         @Expose()
