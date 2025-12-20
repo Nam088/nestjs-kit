@@ -140,6 +140,25 @@ describe('HttpExceptionFilter', () => {
             );
         });
 
+        it('should include data in error response when provided', () => {
+            const exception = new HttpException(
+                {
+                    data: { remainingAttempts: 3 },
+                    message: 'Invalid credentials',
+                },
+                HttpStatus.UNAUTHORIZED,
+            );
+
+            filter.catch(exception, mockArgumentsHost as ArgumentsHost);
+
+            expect(mockResponse.json).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    data: { remainingAttempts: 3 },
+                    message: 'Invalid credentials',
+                }),
+            );
+        });
+
         it('should handle generic Error correctly', () => {
             const exception = new Error('Generic error');
 

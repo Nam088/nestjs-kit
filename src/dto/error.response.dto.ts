@@ -7,6 +7,13 @@ import { Expose } from 'class-transformer';
  */
 export class ErrorResponseDto {
     @ApiProperty({
+        description: 'Additional data payload, if any.',
+        required: false,
+    })
+    @Expose()
+    data?: Record<string, unknown>;
+
+    @ApiProperty({
         description: 'Additional error details, available only in development.',
         required: false,
     })

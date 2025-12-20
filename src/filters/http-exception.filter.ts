@@ -125,6 +125,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         errorResponse:
             | string
             | {
+                  data?: Record<string, unknown>;
                   details?: Record<string, unknown>;
                   error: string;
                   message: string | string[];
@@ -191,6 +192,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
             timestamp: new Date().toISOString(),
             requestId: correlationId,
         };
+
+        if (isObject(errorResponse) && 'data' in errorResponse && errorResponse.data) {
+            basePayload.data = errorResponse.data;
+        }
 
         // Add additional details in development mode
         if (this.isDevelopment) {
@@ -267,6 +272,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     ):
         | string
         | {
+              data?: Record<string, unknown>;
               details?: Record<string, unknown>;
               error: string;
               message: string | string[];
@@ -275,6 +281,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
             return exception.getResponse() as
                 | string
                 | {
+                      data?: Record<string, unknown>;
                       details?: Record<string, unknown>;
                       error: string;
                       message: string | string[];
