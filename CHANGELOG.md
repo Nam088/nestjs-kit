@@ -1,3 +1,10 @@
+## [2.6.1](https://github.com/Nam088/nestjs-kit/compare/v2.6.0...v2.6.1) (2025-12-20)
+
+
+### Bug Fixes
+
+* move `@nam088/nestjs-eslint` from dependencies to devDependencies. ([7b7d063](https://github.com/Nam088/nestjs-kit/commit/7b7d0636dfc7f41e093415bbe66302b9cc81f483))
+
 # [2.6.0](https://github.com/Nam088/nestjs-kit/compare/v2.5.0...v2.6.0) (2025-12-19)
 
 
