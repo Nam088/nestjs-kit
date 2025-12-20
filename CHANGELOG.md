@@ -1,3 +1,10 @@
+# [2.7.0](https://github.com/Nam088/nestjs-kit/compare/v2.6.1...v2.7.0) (2025-12-20)
+
+
+### Features
+
+* Add support for an optional `data` field in error responses and the HTTP exception filter. ([e308f60](https://github.com/Nam088/nestjs-kit/commit/e308f60618773327a9b3c3e71f7b32ec60ee1895))
+
 ## [2.6.1](https://github.com/Nam088/nestjs-kit/compare/v2.6.0...v2.6.1) (2025-12-20)
 
 
