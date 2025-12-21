@@ -1,3 +1,10 @@
+## [2.8.1](https://github.com/Nam088/nestjs-kit/compare/v2.8.0...v2.8.1) (2025-12-21)
+
+
+### Bug Fixes
+
+* Use INestApplication type for Swagger setup ([6ba1ac1](https://github.com/Nam088/nestjs-kit/commit/6ba1ac1f2ce5319fb8444897dc7a29a418727e68))
+
 # [2.8.0](https://github.com/Nam088/nestjs-kit/compare/v2.7.0...v2.8.0) (2025-12-21)
 
 
