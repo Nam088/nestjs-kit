@@ -1,3 +1,10 @@
+# [2.8.0](https://github.com/Nam088/nestjs-kit/compare/v2.7.0...v2.8.0) (2025-12-21)
+
+
+### Features
+
+* enable Swagger auto-auth script to extract tokens from nested paths in response data. ([16964c6](https://github.com/Nam088/nestjs-kit/commit/16964c6f2f4c19478be9110a54651d28bafa7f31))
+
 # [2.7.0](https://github.com/Nam088/nestjs-kit/compare/v2.6.1...v2.7.0) (2025-12-20)
 
 
