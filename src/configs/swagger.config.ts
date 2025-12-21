@@ -83,18 +83,30 @@ export const setUpSwagger = (app: NestApplication, options: SwaggerConfigOptions
 
     const topbarHtml = getTopbarHtml(title, nodeEnv);
 
-    // Auto-auth script
+    // Auto-auth script with support for nested token paths (e.g., 'data.accessToken')
     const autoAuthScript = `
     (function() {
+      // Helper function to get nested property by path (e.g., 'data.accessToken')
+      function getNestedValue(obj, path) {
+        if (!obj || !path) return undefined;
+        var keys = path.split('.');
+        var current = obj;
+        for (var i = 0; i < keys.length; i++) {
+          if (current == null) return undefined;
+          current = current[keys[i]];
+        }
+        return current;
+      }
+
       var originalFetch = window.fetch;
       window.fetch = function(input, init) {
         return originalFetch(input, init).then(function(response) {
           if (input && input.toString().endsWith('${autoAuthApiPattern}') && response.ok) {
             response.clone().json().then(function(data) {
-              if (data && data['${autoAuthTokenKey}']) {
+              var token = getNestedValue(data, '${autoAuthTokenKey}');
+              if (token) {
                 setTimeout(function() {
                   if (window.ui && window.ui.authActions) {
-                    var token = data['${autoAuthTokenKey}'];
                     var authObj = {
                       bearer: {
                         name: "bearer",
