@@ -1,4 +1,4 @@
-import type { NestApplication } from '@nestjs/core';
+import type { INestApplication } from '@nestjs/common';
 
 import type { SwaggerCustomOptions, SwaggerDocumentOptions } from '@nestjs/swagger';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -13,7 +13,7 @@ export type * from './swagger/interfaces';
 
 /**
  * Sets up Swagger documentation for a NestJS application.
- * @param {NestApplication} app - The NestJS application instance
+ * @param {INestApplication} app - The NestJS application instance
  * @param {SwaggerConfigOptions} options - Swagger configuration options
  * @example
  * setUpSwagger(app, {
@@ -24,7 +24,7 @@ export type * from './swagger/interfaces';
  *   port: 3000
  * });
  */
-export const setUpSwagger = (app: NestApplication, options: SwaggerConfigOptions) => {
+export const setUpSwagger = (app: INestApplication, options: SwaggerConfigOptions) => {
     const {
         title,
         apiKey,
