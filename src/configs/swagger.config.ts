@@ -76,7 +76,7 @@ export const setUpSwagger = (app: INestApplication, options: SwaggerConfigOption
 
     const documentOptions: SwaggerDocumentOptions = {
         deepScanRoutes: true,
-        operationIdFactory: (_controllerKey: string, methodKey: string) => methodKey,
+        operationIdFactory: (controllerKey: string, methodKey: string) => `${controllerKey}_${methodKey}`,
     };
 
     const document = SwaggerModule.createDocument(app, openApiConfig, documentOptions);
