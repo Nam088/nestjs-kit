@@ -1,3 +1,10 @@
+# [2.9.0](https://github.com/Nam088/nestjs-kit/compare/v2.8.1...v2.9.0) (2025-12-24)
+
+
+### Features
+
+* include controller key in Swagger operation ID generation ([69ae8eb](https://github.com/Nam088/nestjs-kit/commit/69ae8ebf454d012278e6a51c3ede541de490dc3e))
+
 ## [2.8.1](https://github.com/Nam088/nestjs-kit/compare/v2.8.0...v2.8.1) (2025-12-21)
 
 
