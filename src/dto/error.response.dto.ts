@@ -7,6 +7,14 @@ import { Expose } from 'class-transformer';
  */
 export class ErrorResponseDto {
     @ApiProperty({
+        description: 'Custom error code for programmatic error handling.',
+        example: 'CUSTOM_ERROR_CODE',
+        required: false,
+    })
+    @Expose()
+    code?: string;
+
+    @ApiProperty({
         description: 'Additional data payload, if any.',
         required: false,
     })

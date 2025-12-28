@@ -125,6 +125,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         errorResponse:
             | string
             | {
+                  code?: string;
                   data?: Record<string, unknown>;
                   details?: Record<string, unknown>;
                   error: string;
@@ -184,6 +185,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
         const { url } = request;
         const basePayload: ErrorResponseDto = {
+            code: isObject(errorResponse) && 'code' in errorResponse ? String(errorResponse.code) : undefined,
             error: isString(errorResponse) ? errorResponse : errorResponse.error,
             errors,
             message,
@@ -281,6 +283,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
             return exception.getResponse() as
                 | string
                 | {
+                      code?: string;
                       data?: Record<string, unknown>;
                       details?: Record<string, unknown>;
                       error: string;
