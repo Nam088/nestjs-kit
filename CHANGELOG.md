@@ -1,3 +1,10 @@
+# [2.10.0](https://github.com/Nam088/nestjs-kit/compare/v2.9.0...v2.10.0) (2025-12-28)
+
+
+### Features
+
+* Add custom error code support to `ErrorResponseDto` and `HttpExceptionFilter`. ([20d6803](https://github.com/Nam088/nestjs-kit/commit/20d6803801da329739102419e89e1f2a45440294))
+
 # [2.9.0](https://github.com/Nam088/nestjs-kit/compare/v2.8.1...v2.9.0) (2025-12-24)
 
 
